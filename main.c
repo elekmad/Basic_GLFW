@@ -5,93 +5,108 @@
 
 #define SPEED_RATE 0.5f
 
+//#define ROTATE_EACH
+#define ROTATE_BLOCK
+
 static GLfloat rotation = 2.5f, rotationspeed=SPEED_RATE, t_x=0.0f, t_y=0.0f, t_z=0.0f;
 static double delay = 0;
 
 void draw_cube(float x, float y, float z, float size)
 {
     size /= 2;
+    glPushMatrix();
+    glTranslatef(x, y, z);
+#ifdef ROTATE_EACH
+    glRotatef(rotation, 1.0f, 1.5f, 0.0f);
+#endif
     glBegin(GL_QUADS);
 
     /* Cube Top */
     glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-    glVertex3f(-1.0f * size + x, 1.0f * size + y,  1.0f * size + z);
-    glVertex3f(-1.0f * size + x, 1.0f * size + y, -1.0f * size + z);
-    glVertex3f( 1.0f * size + x, 1.0f * size + y, -1.0f * size + z);
-    glVertex3f( 1.0f * size + x, 1.0f * size + y,  1.0f * size + z);
+    glVertex3f(-1.0f * size, 1.0f * size,  1.0f * size);
+    glVertex3f(-1.0f * size, 1.0f * size, -1.0f * size);
+    glVertex3f( 1.0f * size, 1.0f * size, -1.0f * size);
+    glVertex3f( 1.0f * size, 1.0f * size,  1.0f * size);
 
 
     /* Cube Bottom */
     glColor4f(1.0f, 0.5f, 0.0f, 1.0f);
-    glVertex3f(-1.0f * size + x, -1.0f * size + y,  1.0f * size + z);
-    glVertex3f(-1.0f * size + x, -1.0f * size + y, -1.0f * size + z);
-    glVertex3f( 1.0f * size + x, -1.0f * size + y, -1.0f * size + z);
-    glVertex3f( 1.0f * size + x, -1.0f * size + y,  1.0f * size + z);
+    glVertex3f(-1.0f * size, -1.0f * size,  1.0f * size);
+    glVertex3f(-1.0f * size, -1.0f * size, -1.0f * size);
+    glVertex3f( 1.0f * size, -1.0f * size, -1.0f * size);
+    glVertex3f( 1.0f * size, -1.0f * size,  1.0f * size);
 
     /* Cube Front */
     glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-    glVertex3f(-1.0f * size + x,  1.0f * size + y, 1.0f * size + z);
-    glVertex3f( 1.0f * size + x,  1.0f * size + y, 1.0f * size + z);
-    glVertex3f( 1.0f * size + x, -1.0f * size + y, 1.0f * size + z);
-    glVertex3f(-1.0f * size + x, -1.0f * size + y, 1.0f * size + z);
+    glVertex3f(-1.0f * size,  1.0f * size, 1.0f * size);
+    glVertex3f( 1.0f * size,  1.0f * size, 1.0f * size);
+    glVertex3f( 1.0f * size, -1.0f * size, 1.0f * size);
+    glVertex3f(-1.0f * size, -1.0f * size, 1.0f * size);
 
     /* Cube Back */ 
     glColor4f(0.0f, 1.0f, 0.5f, 1.0f);
-    glVertex3f(-1.0f * size + x,  1.0f * size + y, -1.0f * size + z);
-    glVertex3f( 1.0f * size + x,  1.0f * size + y, -1.0f * size + z);
-    glVertex3f( 1.0f * size + x, -1.0f * size + y, -1.0f * size + z);
-    glVertex3f(-1.0f * size + x, -1.0f * size + y, -1.0f * size + z);
+    glVertex3f(-1.0f * size,  1.0f * size, -1.0f * size);
+    glVertex3f( 1.0f * size,  1.0f * size, -1.0f * size);
+    glVertex3f( 1.0f * size, -1.0f * size, -1.0f * size);
+    glVertex3f(-1.0f * size, -1.0f * size, -1.0f * size);
 
     /* Cube Left Side */
     glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
-    glVertex3f(-1.0f * size + x,  1.0f * size + y, -1.0f * size + z);
-    glVertex3f(-1.0f * size + x,  1.0f * size + y,  1.0f * size + z);
-    glVertex3f(-1.0f * size + x, -1.0f * size + y,  1.0f * size + z);
-    glVertex3f(-1.0f * size + x, -1.0f * size + y, -1.0f * size + z);
+    glVertex3f(-1.0f * size,  1.0f * size, -1.0f * size);
+    glVertex3f(-1.0f * size,  1.0f * size,  1.0f * size);
+    glVertex3f(-1.0f * size, -1.0f * size,  1.0f * size);
+    glVertex3f(-1.0f * size, -1.0f * size, -1.0f * size);
 
     /* Cube Right Side */
     glColor4f(0.15f, 0.25f, 0.75f, 1.0f);
-    glVertex3f( 1.0f * size + x,  1.0f * size + y, -1.0f * size + z);
-    glVertex3f( 1.0f * size + x,  1.0f * size + y,  1.0f * size + z);
-    glVertex3f( 1.0f * size + x, -1.0f * size + y,  1.0f * size + z);
-    glVertex3f( 1.0f * size + x, -1.0f * size + y, -1.0f * size + z);
+    glVertex3f( 1.0f * size,  1.0f * size, -1.0f * size);
+    glVertex3f( 1.0f * size,  1.0f * size,  1.0f * size);
+    glVertex3f( 1.0f * size, -1.0f * size,  1.0f * size);
+    glVertex3f( 1.0f * size, -1.0f * size, -1.0f * size);
 
 
     glEnd();
+    glPopMatrix();
 }
 
 
 void draw_cube_with_hole(float x, float y, float z, float size)
 {
    size /= 3;
+   glPushMatrix();
+   glTranslatef(x, y, z);
+#ifdef ROTATE_BLOCK
+   glRotatef(rotation, 1.0f, 1.5f, 0.0f);
+#endif
 //back side
-   draw_cube(x - size, y - size, z - size, size);
-   draw_cube(x - size, y , z - size, size);
-   draw_cube(x - size, y + size, z - size, size);
+   draw_cube(- size, - size, - size, size);
+   draw_cube(- size, 0, - size, size);
+   draw_cube(- size, size, - size, size);
 
-   draw_cube(x + size, y - size, z - size, size);
-   draw_cube(x + size, y , z - size, size);
-   draw_cube(x + size, y + size, z - size, size);
+   draw_cube(size, - size, - size, size);
+   draw_cube(size, 0, - size, size);
+   draw_cube(size, size, - size, size);
 
-   draw_cube(x, y - size, z - size, size);
-   draw_cube(x, y + size, z - size, size);
+   draw_cube(0, - size, - size, size);
+   draw_cube(0, size, - size, size);
 //front side
-   draw_cube(x - size, y - size, z + size, size);
-   draw_cube(x - size, y , z + size, size);
-   draw_cube(x - size, y + size, z + size, size);
+   draw_cube(- size, - size, size, size);
+   draw_cube(- size, 0, size, size);
+   draw_cube(- size, size, size, size);
 
-   draw_cube(x + size, y - size, z + size, size);
-   draw_cube(x + size, y , z + size, size);
-   draw_cube(x + size, y + size, z + size, size);
+   draw_cube(size, - size, size, size);
+   draw_cube(size, 0, size, size);
+   draw_cube(size, size, size, size);
 
-   draw_cube(x, y - size, z + size, size);
-   draw_cube(x, y + size, z + size, size);
+   draw_cube(0, - size, size, size);
+   draw_cube(0, size, size, size);
 //left size, 2 cubes left
-   draw_cube(x - size, y - size, z, size);
+   draw_cube(- size, - size, 0, size);
 //right size, 2 cubes left
-   draw_cube(x + size, y - size, z, size);
-   draw_cube(x + size, y + size, z, size);
-   draw_cube(x - size, y + size, z, size);
+   draw_cube(size, - size, 0, size);
+   draw_cube(size, size, 0, size);
+   draw_cube(- size, size, 0, size);
+   glPopMatrix();
 }
  
 static void error_callback(int error, const char* description)
